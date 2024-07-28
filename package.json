@@ -2,7 +2,7 @@
   "name": "ardb",
   "version": "1.0.0",
   "description": "A random discord bot",
-  "main": "./dist/index.js",
+  "main": "./dist/src/index.js",
   "scripts": {
     "start": "npx tsc --watch",
     "run": "node .",
