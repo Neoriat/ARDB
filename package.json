@@ -4,9 +4,10 @@
   "description": "A random discord bot",
   "main": "./dist/src/index.js",
   "scripts": {
-    "start": "npx tsc --watch",
-    "run": "node .",
-    "build": "npx tsc"
+    "watch": "npx tsc --watch",
+    "start": "node .",
+    "build": "npx tsc",
+    "deploy": "node ./dist/src/deploy-commands.js"
   },
   "author": "Neoriat",
   "license": "MIT",
