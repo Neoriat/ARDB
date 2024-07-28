@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -37,28 +28,16 @@ for (const folder of folders) {
         }
     }
 }
-client.once(discord_js_1.Events.ClientReady, c => {
-    console.log(`Logged in as ${c.user.tag}`);
-});
-client.on(discord_js_1.Events.InteractionCreate, (interaction) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!interaction.isChatInputCommand())
-        return;
-    const command = client.commands.get(interaction.commandName);
-    if (!command) {
-        console.error(`${interaction.commandName} does not exist!`);
-        return;
+const eventsPath = path_1.default.join(__dirname, 'events');
+const eventFiles = fs_1.default.readdirSync(eventsPath);
+for (const file of eventFiles) {
+    const eventPath = path_1.default.join(eventsPath, file);
+    const event = require(eventPath);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args));
     }
-    try {
-        yield command.execute(interaction);
+    else {
+        client.on(event.name, (...args) => event.execute(...args));
     }
-    catch (e) {
-        console.error(e);
-        if (interaction.replied || interaction.deferred) {
-            interaction.followUp('There was an error while executing this command! UWU');
-        }
-        else {
-            interaction.reply('There was an error while executing this command! UWU');
-        }
-    }
-}));
+}
 client.login(process.env.token);
