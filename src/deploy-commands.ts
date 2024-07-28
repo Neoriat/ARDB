@@ -17,7 +17,7 @@ for (const folder of folders) {
         const command = require(filePath)
 
         if ('data' in command && 'execute' in command) {
-            commands.push(command.data.ToJSON());
+            commands.push(command.data.toJSON());
         } else {
             console.log(`There is no "data" or "execute" property in ${filePath}!`)
         }
@@ -28,7 +28,7 @@ const rest:REST = new REST().setToken(token);
 
 (async () => {
     try {
-        console.log(`Started registering ${commands.length}!`)
+        console.log(`Started registering ${commands.length} commands!`)
         const data = await rest.put(Routes.applicationGuildCommands(client_id , guild_id) ,
         { body:commands },
     );
@@ -39,4 +39,4 @@ const rest:REST = new REST().setToken(token);
     }
 
 
-})
+})();

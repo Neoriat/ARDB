@@ -26,7 +26,7 @@ for (const folder of folders) {
         const filePath = node_path_1.default.join(filesPath, file);
         const command = require(filePath);
         if ('data' in command && 'execute' in command) {
-            commands.push(command.data.ToJSON());
+            commands.push(command.data.toJSON());
         }
         else {
             console.log(`There is no "data" or "execute" property in ${filePath}!`);
@@ -36,11 +36,11 @@ for (const folder of folders) {
 const rest = new discord_js_1.REST().setToken(config_json_1.token);
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(`Started registering ${commands.length}!`);
+        console.log(`Started registering ${commands.length} commands!`);
         const data = yield rest.put(discord_js_1.Routes.applicationGuildCommands(config_json_1.client_id, config_json_1.guild_id), { body: commands });
         console.log(`Registered ${commands.length} application commands!`);
     }
     catch (error) {
         console.error(error);
     }
-}));
+}))();
