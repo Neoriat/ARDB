@@ -7,8 +7,6 @@ const config_json_1 = require("../config.json");
 const discord_js_1 = require("discord.js");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-console.log(config_json_1.token);
-console.log(typeof (config_json_1.token));
 const client = new discord_js_1.Client({
     intents: [discord_js_1.GatewayIntentBits.Guilds]
 });

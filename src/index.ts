@@ -2,8 +2,8 @@ import {token} from '../config.json';
 import {Client , Events , GatewayIntentBits , Collection} from 'discord.js';
 import fs from 'fs';
 import path from 'path';
-console.log(token);
-console.log(typeof(token));
+
+
 // Extends the base client
 interface clientCommands extends Client{
     commands: Collection<string,any>;
