@@ -2,15 +2,17 @@
   "name": "ardb",
   "version": "1.0.0",
   "description": "A random discord bot",
-  "main": "./dist/index.js",
+  "main": "./dist/src/index.js",
   "scripts": {
-    "start": "npx tsc --watch",
-    "run": "node ."
+    "watch": "npx tsc --watch",
+    "start": "node .",
+    "build": "npx tsc",
+    "deploy": "node ./dist/src/deploy-commands.js"
   },
   "author": "Neoriat",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^20.14.12",
+    "@types/node": "^20.14.13",
     "typescript": "^5.5.4"
   },
   "dependencies": {

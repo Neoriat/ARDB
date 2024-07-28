@@ -1,7 +1,8 @@
-import 'dotenv/config';
-import { Client , Events , GatewayIntentBits , Collection} from 'discord.js';
+import {token} from '../config.json';
+import {Client , Events , GatewayIntentBits , Collection} from 'discord.js';
 import fs from 'fs';
 import path from 'path';
+
 
 // Extends the base client
 interface clientCommands extends Client{
@@ -12,7 +13,7 @@ const client = new Client({
     intents: [GatewayIntentBits.Guilds]
 }) as clientCommands
 
-client.commands = new Collection()
+client.commands = new Collection()  
 
 const foldersPath:string = path.join(__dirname , 'commands');
 const folders:string[] = fs.readdirSync(foldersPath);
@@ -40,33 +41,20 @@ for (const folder of folders) {
     }
 }
 
+const eventsPath = path.join(__dirname , 'events');
+const eventFiles = fs.readdirSync(eventsPath);
 
-client.once(Events.ClientReady , c => {
-    console.log(`Logged in as ${c.user.tag}`);
-})
+for (const file of eventFiles) {
 
-client.on(Events.InteractionCreate , async interaction => {
-    if (!interaction.isChatInputCommand()) return;
-
-    const command = client.commands.get(interaction.commandName);
-
-    if (!command) {
-        console.error(`${interaction.commandName} does not exist!`)
-        return;
+    const eventPath = path.join(eventsPath , file);
+    const event = require(eventPath);
+    
+    if (event.once) {
+        client.once(event.name , (...args) => event.execute(...args));
+    } else {
+        client.on(event.name , (...args) => event.execute(...args));
     }
 
-    try {
-        await command.execute(interaction);
-    } catch(e) {
-        console.error(e)
-        if (interaction.replied || interaction.deferred) {
-            interaction.followUp('There was an error while executing this command! UWU')
-        } else {
-            interaction.reply('There was an error while executing this command! UWU')
-        }
-    }
+}
 
-
-})
-
-client.login(process.env.token);
+client.login(token);
