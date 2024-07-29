@@ -16,7 +16,7 @@ module.exports = {
         .setDescription('pong'),
     execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield interaction.reply('pong');
+            yield interaction.reply(`🏓Latency is ${Date.now() - interaction.createdTimestamp}ms. API Latency is ${Math.round(interaction.client.ws.ping)}ms`);
         });
     }
 };
