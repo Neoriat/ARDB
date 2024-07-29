@@ -29,7 +29,7 @@ const rest:REST = new REST().setToken(token);
 (async () => {
     try {
         console.log(`Started registering ${commands.length} commands!`)
-        const data = await rest.put(Routes.applicationGuildCommands(client_id , guild_id) ,
+        const data = await rest.put(Routes.applicationCommands(client_id) ,
         { body:commands },
     );
 
