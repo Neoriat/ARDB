@@ -11,28 +11,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 module.exports = {
-    name: discord_js_1.Events.InteractionCreate,
+    data: new discord_js_1.SlashCommandBuilder()
+        .setName('reload')
+        .setDescription('reload a command!')
+        .addStringOption(option => option.setName('command')
+        .setDescription('the command you want to reload!')
+        .setRequired(true)),
     execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!interaction.isChatInputCommand)
-                return;
-            const command = interaction.client.commands.get(interaction.commandName);
+            const commandName = interaction.options.getString('command').toLowerCase();
+            const command = interaction.client.commands.get(commandName);
             if (!command) {
-                console.error(`No command matching ${interaction.commandName} was found.`);
-                return;
+                return yield interaction.reply('There is no such command as that name!');
             }
+            delete require.cache[require.resolve(`./${command.data.name}.js`)];
             try {
-                yield command.execute(interaction);
+                const newCommand = require(`./${command.data.name}.js`);
+                interaction.client.commands.set(newCommand.data.name, newCommand);
+                yield interaction.reply(`Successfully reloaded the ${newCommand.data.name}!`);
             }
             catch (error) {
                 console.error(error);
-                if (interaction.replied || interaction.deferred) {
-                    yield interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
-                }
-                else {
-                    yield interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-                }
+                yield interaction.reply(`There was an error while reloading the ${command.data.name} command!`);
             }
         });
-    },
+    }
 };
