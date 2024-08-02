@@ -16,7 +16,11 @@ module.exports = {
         .setDescription('pong'),
     execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield interaction.reply(`🏓Latency is ${Date.now() - interaction.createdTimestamp}ms. API Latency is ${Math.round(interaction.client.ws.ping)}ms`);
+            const embed = new discord_js_1.EmbedBuilder()
+                .setTitle('Latency')
+                .addFields({ name: 'Bot latency', value: `${Date.now() - interaction.createdTimestamp}ms.` }, { name: 'Api latency', value: `${Math.round(interaction.client.ws.ping)}ms` })
+                .setFooter({ text: `Command invoked by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL });
+            yield interaction.reply({ embeds: [embed] });
         });
     }
 };
