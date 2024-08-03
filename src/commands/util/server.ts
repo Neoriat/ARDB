@@ -4,15 +4,12 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('server')
         .setDescription('Shows info on the current server!')
-        .setDMPermission(false)
-        .addBooleanOption(option => 
-            option.setName('ephemeral')   
-                .setDescription('ephemeral')            
-        ) ,
+        .setDMPermission(false),
+
         async execute(interaction:any) {
             const timeStamp:number = Math.floor(interaction.guild.createdTimestamp/ 1000);
             const membersCount:number = interaction.guild.memberCount;
-            console.log(interaction.guild.emojis)
+           
             const embed:EmbedBuilder = new EmbedBuilder()
                 .setColor('NotQuiteBlack')
                 .setTitle('Information about the server!')
@@ -31,6 +28,6 @@ module.exports = {
                 .setFooter({text:`Command invoked by ${interaction.user.tag}` , iconURL:interaction.user.avatarURL()})
 
 
-            await interaction.reply({embeds:[embed] , ephemeral:interaction.options.getBoolean()})
+            await interaction.reply({embeds:[embed]})
         }
 }

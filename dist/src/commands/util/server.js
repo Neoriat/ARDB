@@ -14,14 +14,11 @@ module.exports = {
     data: new discord_js_1.SlashCommandBuilder()
         .setName('server')
         .setDescription('Shows info on the current server!')
-        .setDMPermission(false)
-        .addBooleanOption(option => option.setName('ephemeral')
-        .setDescription('ephemeral')),
+        .setDMPermission(false),
     execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
             const timeStamp = Math.floor(interaction.guild.createdTimestamp / 1000);
             const membersCount = interaction.guild.memberCount;
-            console.log(interaction.guild.emojis);
             const embed = new discord_js_1.EmbedBuilder()
                 .setColor('NotQuiteBlack')
                 .setTitle('Information about the server!')
@@ -31,7 +28,7 @@ module.exports = {
                 .addFields({ name: 'Server ID', value: interaction.guild.id }, { name: 'Created at', value: `<t:${timeStamp}> => <t:${timeStamp}:R>` }, { name: 'Members count', value: String(membersCount) }, { name: 'Owner', value: `<@${interaction.guild.ownerId}>` })
                 .setTimestamp()
                 .setFooter({ text: `Command invoked by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
-            yield interaction.reply({ embeds: [embed], ephemeral: interaction.options.getBoolean() });
+            yield interaction.reply({ embeds: [embed] });
         });
     }
 };
