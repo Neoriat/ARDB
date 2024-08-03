@@ -19,7 +19,7 @@ module.exports = {
             const embed = new discord_js_1.EmbedBuilder()
                 .setTitle('Latency')
                 .addFields({ name: 'Bot latency', value: `${Date.now() - interaction.createdTimestamp}ms.` }, { name: 'Api latency', value: `${Math.round(interaction.client.ws.ping)}ms` })
-                .setFooter({ text: `Command invoked by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL });
+                .setFooter({ text: `Command invoked by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
             yield interaction.reply({ embeds: [embed] });
         });
     }

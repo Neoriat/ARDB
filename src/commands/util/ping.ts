@@ -12,7 +12,7 @@ module.exports = {
                 {name:'Bot latency' , value:`${Date.now() - interaction.createdTimestamp}ms.`},
                 {name:'Api latency' , value:`${Math.round(interaction.client.ws.ping)}ms`}
             )
-            .setFooter({text:`Command invoked by ${interaction.user.tag}` , iconURL:interaction.user.avatarURL})
+            .setFooter({text:`Command invoked by ${interaction.user.tag}` , iconURL:interaction.user.avatarURL()})
 
         await interaction.reply({embeds : [embed]})
     }
