@@ -8,8 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
+const path_1 = __importDefault(require("path"));
+const node_fs_1 = __importDefault(require("node:fs"));
 module.exports = {
     data: new discord_js_1.SlashCommandBuilder()
         .setName('reload')
@@ -24,15 +29,26 @@ module.exports = {
             if (!command) {
                 return yield interaction.reply('There is no such command as that name!');
             }
-            delete require.cache[require.resolve(`./${command.data.name}.js`)];
-            try {
-                const newCommand = require(`./${command.data.name}.js`);
-                interaction.client.commands.set(newCommand.data.name, newCommand);
-                yield interaction.reply(`Successfully reloaded the ${newCommand.data.name}!`);
-            }
-            catch (error) {
-                console.error(error);
-                yield interaction.reply(`There was an error while reloading the ${command.data.name} command!`);
+            const currentPath = path_1.default.join(__dirname, '../');
+            const folders = node_fs_1.default.readdirSync(currentPath);
+            for (const folder of folders) {
+                const filesPath = path_1.default.join(currentPath, folder);
+                const files = node_fs_1.default.readdirSync(filesPath);
+                for (const file of files) {
+                    const filePath = path_1.default.join(filesPath, file);
+                    if (file == `${commandName}.js`) {
+                        delete require.cache[require.resolve(filePath)];
+                        try {
+                            const newCommand = require(filePath);
+                            interaction.client.commands.set(newCommand.data.name, newCommand);
+                            yield interaction.reply(`Successfully reloaded the ${newCommand.data.name}!`);
+                        }
+                        catch (error) {
+                            console.error(error);
+                            yield interaction.reply(`There was an error while reloading the ${command.data.name} command!`);
+                        }
+                    }
+                }
             }
         });
     }
