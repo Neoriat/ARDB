@@ -1,4 +1,4 @@
-import { SlashCommandBuilder , EmbedBuilder , PermissionFlagsBits, User , GuildMember } from "discord.js";
+import { SlashCommandBuilder , EmbedBuilder , PermissionFlagsBits, GuildMember } from "discord.js";
 
 
 module.exports = {
@@ -12,13 +12,20 @@ module.exports = {
                 .setName('target')
                 .setDescription('The user that you need to kick!')
                 .setRequired(true)
+        )
+        .addStringOption(option =>
+            option
+                .setName('reason')
+                .setDescription('Why do you want to kick that member?')
+                .setRequired(false)
         ),
 
         async execute(interaction:any) {
 
             const target:GuildMember = interaction.options.getMember('target');
+            const reason:string = interaction.options.getString('reason') ?? 'No reason provided';
             await interaction.reply(`<@${target.user.id}> has been kicked`);
-            target.kick();
+            target.kick(`Kicked by ${target.nickname} | reason: ${reason}`);
             
         }
 
