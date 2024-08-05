@@ -19,12 +19,33 @@ module.exports = {
         .addUserOption(option => option
         .setName('target')
         .setDescription('The user that you need to kick!')
-        .setRequired(true)),
+        .setRequired(true))
+        .addStringOption(option => option
+        .setName('reason')
+        .setDescription('Why do you want to kick that member?')
+        .setRequired(false)),
     execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             const target = interaction.options.getMember('target');
-            yield interaction.reply(`<@${target.user.id}> has been kicked`);
-            target.kick();
+            const reason = (_a = interaction.options.getString('reason')) !== null && _a !== void 0 ? _a : 'No reason provided';
+            try {
+                if (target.kickable) {
+                    yield interaction.reply(`<@${target.user.id}> has been kicked`);
+                    yield target.kick(`Kicked by ${interaction.user.name} | reason: ${reason}`);
+                }
+                else {
+                    yield interaction.reply('You can\'t do that!');
+                }
+            }
+            catch (error) {
+                if (error = TypeError) {
+                    yield interaction.reply('The user is not part of the server!');
+                }
+                else {
+                    yield interaction.reply(error);
+                }
+            }
         });
     }
 };

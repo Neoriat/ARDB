@@ -24,8 +24,21 @@ module.exports = {
 
             const target:GuildMember = interaction.options.getMember('target');
             const reason:string = interaction.options.getString('reason') ?? 'No reason provided';
-            await interaction.reply(`<@${target.user.id}> has been kicked`);
-            target.kick(`Kicked by ${target.nickname} | reason: ${reason}`);
+            try {
+                if (target.kickable) {
+                    await interaction.reply(`<@${target.user.id}> has been kicked`);
+                    await target.kick(`Kicked by ${interaction.user.name} | reason: ${reason}`);
+                } else {
+                    await interaction.reply('You can\'t do that!');
+                }
+            } catch (error) {
+                if (error = TypeError) {
+                    await interaction.reply('The user is not part of the server!');
+                } else {
+                    await interaction.reply(error);
+                }
+
+            }
             
         }
 
