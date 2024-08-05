@@ -1,3 +1,6 @@
+![GitHub License](https://img.shields.io/github/license/Neoriat/ARDB)
+
+
 # ARDB
 A random discord bot. A multi purpose bot with different commands and functionalities.
 
