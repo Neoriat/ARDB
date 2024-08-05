@@ -47,7 +47,7 @@ module.exports = {
                 
             }
 
-           // delete require.cache[require.resolve(`./${command.data.name}.js`)];
+          
 
 
         }
