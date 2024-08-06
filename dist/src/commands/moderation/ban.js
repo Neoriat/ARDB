@@ -15,7 +15,7 @@ module.exports = {
     data: new discord_js_1.SlashCommandBuilder()
         .setName('ban')
         .setDescription('bans the specified user!')
-        .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.KickMembers)
+        .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.BanMembers)
         .setDMPermission(false)
         .addUserOption(option => option
         .setName('target')
