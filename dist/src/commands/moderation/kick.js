@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
+const embeds_1 = require("../../embeds");
 module.exports = {
     data: new discord_js_1.SlashCommandBuilder()
         .setName('kick')
@@ -29,21 +30,29 @@ module.exports = {
             var _a;
             const target = interaction.options.getMember('target');
             const reason = (_a = interaction.options.getString('reason')) !== null && _a !== void 0 ? _a : 'No reason provided';
+            const embed = new discord_js_1.EmbedBuilder()
+                .setAuthor({ name: interaction.client.user.tag, iconURL: interaction.client.user.avatarURL() })
+                .setTitle('Success!')
+                .setDescription('The user has been successfully kicked!')
+                .addFields({ name: 'The user kicked', value: `<@${target.id}>` }, { name: 'Reason', value: reason }, { name: 'Moderator', value: `<@${interaction.user.id}>` })
+                .setFooter({ text: `Command invoked by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
+                .setTimestamp();
             try {
                 if (target.kickable) {
-                    yield interaction.reply(`<@${target.user.id}> has been kicked`);
-                    yield target.kick(`Kicked by ${interaction.user.name} | reason: ${reason}`);
+                    yield interaction.reply({ embeds: [embed] });
+                    yield target.kick(`Kicked by ${interaction.user.tag} | reason: ${reason}`);
                 }
                 else {
-                    yield interaction.reply('You can\'t do that!');
+                    yield interaction.reply({ embeds: [embeds_1.permissionErrorEmbed] });
                 }
             }
             catch (error) {
                 if (error = TypeError) {
-                    yield interaction.reply('The user is not part of the server!');
+                    yield interaction.reply({ embeds: [embeds_1.userNotFoundErrorEmbed] });
                 }
                 else {
-                    yield interaction.reply(error);
+                    yield interaction.reply({ embeds: [embeds_1.errorEmbed] });
+                    yield interaction.followUp({ content: error, ephemeral: true });
                 }
             }
         });
