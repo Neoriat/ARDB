@@ -1,4 +1,4 @@
-import { SlashCommandBuilder , EmbedBuilder , PermissionFlagsBits, GuildMember, Embed } from "discord.js";
+import { SlashCommandBuilder , EmbedBuilder , PermissionFlagsBits, GuildMember } from "discord.js";
 import { errorEmbed, permissionErrorEmbed, userNotFoundErrorEmbed } from '../../embeds';
 
 
